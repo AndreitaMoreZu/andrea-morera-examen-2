@@ -1,0 +1,15 @@
+# Local configuration — never commit this
+local.properties
+
+# Gradle build cache
+.gradle/
+build/
+app/build/
+
+# Android Studio project files
+*.iml
+.idea/
+*.DS_Store
+
+# Kotlin coroutines
+*.kotlin_module

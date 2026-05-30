@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Ticket shape: rounded rectangle -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M30,28 Q30,22 36,22 L72,22 Q78,22 78,28 L78,80 Q78,86 72,86 L36,86 Q30,86 30,80 Z" />
+    <!-- Three lines representing ticket info -->
+    <path
+        android:fillColor="#1565C0"
+        android:pathData="M38,38 L70,38 Q70,42 70,42 L38,42 Q38,38 38,38 Z" />
+    <path
+        android:fillColor="#1565C0"
+        android:pathData="M38,50 L62,50 L62,54 L38,54 Z" />
+    <path
+        android:fillColor="#1565C0"
+        android:pathData="M38,62 L55,62 L55,66 L38,66 Z" />
+</vector>
