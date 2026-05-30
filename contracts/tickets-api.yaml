@@ -1,0 +1,215 @@
+openapi: 3.0.3
+info:
+  title: Panini Ticket Support API
+  description: API para la gestión de tickets de soporte relacionados con proveedores del álbum oficial Copa Mundial FIFA 2026.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:5000
+    description: Servidor local de desarrollo
+
+paths:
+
+  /api/auth/login:
+    post:
+      summary: Autenticación de usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Login exitoso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '401':
+          description: Credenciales inválidas
+
+  /api/tickets:
+    get:
+      summary: Obtener todos los tickets
+      responses:
+        '200':
+          description: Lista de tickets
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TicketResponse'
+    post:
+      summary: Crear nuevo ticket de soporte
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTicketRequest'
+      responses:
+        '201':
+          description: Ticket creado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TicketResponse'
+        '400':
+          description: Datos inválidos
+
+  /api/tickets/{id}:
+    get:
+      summary: Obtener ticket por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Detalle del ticket
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TicketResponse'
+        '404':
+          description: Ticket no encontrado
+
+  /api/tickets/{id}/status:
+    patch:
+      summary: Actualizar estado de un ticket
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateStatusRequest'
+      responses:
+        '200':
+          description: Estado actualizado correctamente
+        '404':
+          description: Ticket no encontrado
+
+  /api/tickets/{id}/priority:
+    patch:
+      summary: Actualizar prioridad de un ticket
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePriorityRequest'
+      responses:
+        '200':
+          description: Prioridad actualizada correctamente
+        '404':
+          description: Ticket no encontrado
+
+components:
+  schemas:
+
+    LoginRequest:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          format: email
+          example: "andrea.morera@panini.com"
+        password:
+          type: string
+          format: password
+
+    UserResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "usr-001"
+        name:
+          type: string
+          example: "Andrea Morera"
+        email:
+          type: string
+          example: "andrea.morera@panini.com"
+
+    TicketResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "TKT-001"
+        title:
+          type: string
+          example: "Faltante crítico de stickers selección española"
+        description:
+          type: string
+        priority:
+          type: string
+          enum: [LOW, MEDIUM, HIGH, CRITICAL]
+        status:
+          type: string
+          enum: [OPEN, IN_PROGRESS, RESOLVED, CLOSED]
+        category:
+          type: string
+          enum: [INVENTORY, DISTRIBUTION, LOGISTICS, PROVIDER, QUALITY]
+        provider:
+          type: string
+          example: "Gráficas Especiales S.A."
+        createdAt:
+          type: string
+          format: date
+          example: "2026-05-28"
+        reportedBy:
+          type: string
+          example: "Sofía Ramírez"
+
+    CreateTicketRequest:
+      type: object
+      required: [title, priority, category, provider, reportedBy]
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        priority:
+          type: string
+          enum: [LOW, MEDIUM, HIGH, CRITICAL]
+        category:
+          type: string
+          enum: [INVENTORY, DISTRIBUTION, LOGISTICS, PROVIDER, QUALITY]
+        provider:
+          type: string
+        reportedBy:
+          type: string
+
+    UpdateStatusRequest:
+      type: object
+      required: [status]
+      properties:
+        status:
+          type: string
+          enum: [OPEN, IN_PROGRESS, RESOLVED, CLOSED]
+
+    UpdatePriorityRequest:
+      type: object
+      required: [priority]
+      properties:
+        priority:
+          type: string
+          enum: [LOW, MEDIUM, HIGH, CRITICAL]
